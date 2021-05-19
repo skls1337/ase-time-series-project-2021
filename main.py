@@ -12,8 +12,7 @@ warnings.filterwarnings("ignore")
 
 # 365 days - calculate at the level of one year
 DAYS = 365
-# forecast for 1000 days
-FORECAST_DAYS = 1000
+
 
 # Read the input data from csv file, get around the weird date format,
 # set the index and sort by time
@@ -70,7 +69,7 @@ plt.legend(loc='best')
 plt.tight_layout()
 plt.show()
 
-# Test stationarity of residuals (noise) to find
+# Test stationarity of residuals (noise)
 plt.plot(residual, label='Residuals (noise)', color='blue')
 plt.legend(loc='best')
 plt.show()
@@ -81,8 +80,9 @@ plt.show()
 # Plot ACF and PACF to find p, d, q - smoothen using rolling mean
 log_rollmean = ts_log.rolling(window=DAYS, center=False).mean()
 log_rollmean.dropna(inplace=True)
-lag_acf = acf(log_rollmean, nlags=2600)
-lag_pacf = pacf(log_rollmean, nlags=20, method='ols')
+num_rows, num_columns = log_rollmean.shape
+lag_acf = acf(log_rollmean, nlags=num_rows)
+lag_pacf = pacf(log_rollmean, nlags=15, method='ols')
 print(lag_acf)
 print(lag_pacf)
 
@@ -135,7 +135,7 @@ plt.title('RSS: %.7f' %
 plt.show()
 
 # Divide into train and test datasets
-size = int(len(ts_log) - 50)
+size = int(len(ts_log) - 100)
 train_arima, test_arima = ts_log['Price'][0:size], ts_log['Price'][size:len(
     ts_log)]
 history = [x for x in train_arima]
@@ -184,7 +184,6 @@ plt.legend({'Original', 'Predicted'})
 plt.show()
 
 # Now we can forecast values
-print(ts_log.head(10))
 results_ARIMA.plot_predict(1, len(ts_log['Price']) + 1000)
 plt.show()
 

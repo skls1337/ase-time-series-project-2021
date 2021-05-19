@@ -29,7 +29,8 @@ def test_stationarity(x, window):
 
             break
         else:
-            print('The dataset is stationary (confidence level %s)' % key)
+            print('The dataset is stationary (confidence level %s' %
+                  (100-int(key[0]))+'%)')
             break
 
 
