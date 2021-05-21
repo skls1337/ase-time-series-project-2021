@@ -117,7 +117,7 @@ plt.title('RSS: %.7f' %
 plt.show()
 
 # Moving Average Model
-model = ARIMA(ts_log['Price'], order=(0, 1, 1))
+model = ARIMA(ts_log['Price'], order=(0, 1, 2))
 results_MA = model.fit(disp=-1)
 plt.plot(ts_log_diff, color='blue')
 plt.plot(results_MA.fittedvalues, color='red')
@@ -177,20 +177,20 @@ plt.figure(figsize=(8, 6))
 test_day = [t for t in range(len(test_arima))]
 plt.plot(test_day, predictions, color='red')
 plt.plot(test_day, originals, color='green')
-plt.title('Expected Vs Predicted Views Forecasting')
+plt.title('Expected Vs Predicted value of Bitcoin')
 plt.xlabel('Day')
 plt.ylabel('Price')
 plt.legend({'Original', 'Predicted'})
 plt.show()
 
 # Now we can forecast values
-results_ARIMA.plot_predict(1, len(ts_log['Price']) + 1000)
+results_ARIMA.plot_predict(1, len(ts_log['Price']) + 100)
 plt.show()
 
-x_vals = [x for x in range(len(ts_log['Price']) + 1000)]
+x_vals = [x for x in range(len(ts_log['Price']) + 100)]
 y_vals = [np.exp(x) for x in ts_log['Price']]
 y_vals2 = [np.nan for x in ts_log['Price']]
-for x in results_ARIMA.forecast(1000)[0]:
+for x in results_ARIMA.forecast(100)[0]:
     y_vals.append(np.nan)
     y_vals2.append(np.exp(x))
 plt.plot(x_vals, y_vals, label='Original', color='red')
